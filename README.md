@@ -44,7 +44,15 @@ Ensure you have Flutter installed:
 flutter --version
 ```
 
-### 2. Run the Application
+### 2. Setup & Maintenance Commands
+To clean cache, repair dependencies, and fetch packages:
+```bash
+flutter clean
+flutter pub cache repair
+flutter pub get
+```
+
+### 3. Run the Application
 
 #### On Windows Desktop:
 ```bash
@@ -60,6 +68,14 @@ flutter run -d chrome
 ```bash
 flutter run -d android
 ```
+
+### 4. Build Production Release APK
+To compile the standalone Android Release APK:
+```bash
+flutter build apk --release
+```
+The output binary will be generated at:
+`build/app/outputs/flutter-apk/app-release.apk`
 
 ---
 
