@@ -40,8 +40,9 @@ class _LandingScreenState extends State<LandingScreen> {
 
     return Scaffold(
       backgroundColor: CyberTheme.navyDark,
-      body: SingleChildScrollView(
-        child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
           children: [
             // Top Navigation Bar
             Container(
@@ -358,7 +359,7 @@ class _LandingScreenState extends State<LandingScreen> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildQuickChip(String url, Color color) {

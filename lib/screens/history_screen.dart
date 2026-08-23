@@ -39,12 +39,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
     return Scaffold(
       backgroundColor: CyberTheme.navyDark,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: isDesktop ? 32 : 16,
-          vertical: 24,
-        ),
-        child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: isDesktop ? 32 : 16,
+            vertical: isDesktop ? 24 : 16,
+          ),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title Header
@@ -249,7 +250,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildFilterChip(String filterKey, String label, ScanProvider scan) {

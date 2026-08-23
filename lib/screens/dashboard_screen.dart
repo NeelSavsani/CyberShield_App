@@ -105,83 +105,186 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
 
     return Scaffold(
       backgroundColor: CyberTheme.navyDark,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            padding: EdgeInsets.symmetric(
-              horizontal: isDesktop ? 32 : 16,
-              vertical: 24,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Top Header Row
-                Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Security Operations Console',
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: EdgeInsets.symmetric(
+                horizontal: isDesktop ? 32 : 16,
+                vertical: isDesktop ? 24 : 16,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Mobile Branding Header
+                  if (!isDesktop) ...[
+                    Row(
+                      children: [
+                        Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            color: CyberTheme.cyan.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: CyberTheme.cyan.withOpacity(0.3)),
+                          ),
+                          child: const Center(
+                            child: FaIcon(
+                              FontAwesomeIcons.shieldHalved,
+                              color: CyberTheme.cyan,
+                              size: 16,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        RichText(
+                          text: TextSpan(
+                            text: 'CYBER',
                             style: GoogleFonts.spaceGrotesk(
-                              fontSize: isDesktop ? 26 : 20,
+                              fontSize: 18,
                               fontWeight: FontWeight.w700,
                               color: CyberTheme.white,
+                              letterSpacing: 0.5,
                             ),
+                            children: const [
+                              TextSpan(
+                                text: 'SHIELD',
+                                style: TextStyle(color: CyberTheme.cyan),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 4),
-                          Text(
-                            'Inspect real-time target URLs and QR code payloads against multi-stage threat heuristics.',
-                            style: GoogleFonts.inter(
-                              fontSize: 13,
-                              color: CyberTheme.slateLight,
+                        ),
+                        const Spacer(),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            color: CyberTheme.success.withOpacity(0.12),
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: CyberTheme.success.withOpacity(0.3)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 6,
+                                height: 6,
+                                decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: CyberTheme.success,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                'Autonomous',
+                                style: GoogleFonts.inter(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: CyberTheme.success,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+
+                  // Console Title
+                  Text(
+                    'Security Operations Console',
+                    style: GoogleFonts.spaceGrotesk(
+                      fontSize: isDesktop ? 26 : 20,
+                      fontWeight: FontWeight.w700,
+                      color: CyberTheme.white,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Inspect real-time target URLs and QR code payloads against multi-stage threat heuristics.',
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      color: CyberTheme.slateLight,
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // Quick Stat Counters (Responsive Grid)
+                  if (isDesktop)
+                    Row(
+                      children: [
+                        _buildMetricCard(
+                          'TOTAL SCANNED',
+                          '${scan.totalScans}',
+                          FontAwesomeIcons.listCheck,
+                          CyberTheme.cyan,
+                        ),
+                        const SizedBox(width: 12),
+                        _buildMetricCard(
+                          'THREATS DETECTED',
+                          '${scan.phishingDetected}',
+                          FontAwesomeIcons.triangleExclamation,
+                          CyberTheme.danger,
+                        ),
+                        const SizedBox(width: 12),
+                        _buildMetricCard(
+                          'SAFE SITES',
+                          '${scan.safeUrls}',
+                          FontAwesomeIcons.circleCheck,
+                          CyberTheme.success,
+                        ),
+                        const SizedBox(width: 12),
+                        _buildMetricCard(
+                          'AVG LATENCY',
+                          '1.2s',
+                          FontAwesomeIcons.stopwatch,
+                          CyberTheme.teal,
+                        ),
+                      ],
+                    )
+                  else
+                    Column(
+                      children: [
+                        Row(
+                          children: [
+                            _buildMetricCard(
+                              'TOTAL SCANNED',
+                              '${scan.totalScans}',
+                              FontAwesomeIcons.listCheck,
+                              CyberTheme.cyan,
                             ),
-                          ),
-                        ],
-                      ),
+                            const SizedBox(width: 8),
+                            _buildMetricCard(
+                              'THREATS DETECTED',
+                              '${scan.phishingDetected}',
+                              FontAwesomeIcons.triangleExclamation,
+                              CyberTheme.danger,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            _buildMetricCard(
+                              'SAFE SITES',
+                              '${scan.safeUrls}',
+                              FontAwesomeIcons.circleCheck,
+                              CyberTheme.success,
+                            ),
+                            const SizedBox(width: 8),
+                            _buildMetricCard(
+                              'SUSPICIOUS',
+                              '${scan.suspiciousUrls}',
+                              FontAwesomeIcons.shieldHalved,
+                              CyberTheme.warning,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ],
-                ),
 
-                const SizedBox(height: 24),
-
-                // Quick Stat Counters
-                Row(
-                  children: [
-                    _buildMetricCard(
-                      'TOTAL SCANNED',
-                      '${scan.totalScans}',
-                      FontAwesomeIcons.listCheck,
-                      CyberTheme.cyan,
-                    ),
-                    const SizedBox(width: 12),
-                    _buildMetricCard(
-                      'THREATS DETECTED',
-                      '${scan.phishingDetected}',
-                      FontAwesomeIcons.triangleExclamation,
-                      CyberTheme.danger,
-                    ),
-                    const SizedBox(width: 12),
-                    _buildMetricCard(
-                      'SAFE SITES',
-                      '${scan.safeUrls}',
-                      FontAwesomeIcons.circleCheck,
-                      CyberTheme.success,
-                    ),
-                    if (isDesktop) ...[
-                      const SizedBox(width: 12),
-                      _buildMetricCard(
-                        'AVG LATENCY',
-                        '1.2s',
-                        FontAwesomeIcons.stopwatch,
-                        CyberTheme.teal,
-                      ),
-                    ],
-                  ],
-                ),
-
-                const SizedBox(height: 24),
+                  const SizedBox(height: 20),
 
                 // Main Scanner Container
                 CyberCard(
@@ -219,15 +322,15 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                       const SizedBox(height: 20),
 
                       SizedBox(
-                        height: 220,
+                        height: isDesktop ? 220 : 255,
                         child: TabBarView(
                           controller: _tabController,
                           children: [
                             // Tab 1: URL Scanner
-                            _buildUrlScannerTab(),
+                            _buildUrlScannerTab(isDesktop),
 
                             // Tab 2: QR Scanner
-                            _buildQrScannerTab(),
+                            _buildQrScannerTab(isDesktop),
                           ],
                         ),
                       ),
@@ -235,7 +338,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                   ),
                 ),
 
-                const SizedBox(height: 32),
+                const SizedBox(height: 28),
 
                 // Recent Scans Section
                 Row(
@@ -244,7 +347,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                     Text(
                       'Recent Intelligence Scans',
                       style: GoogleFonts.spaceGrotesk(
-                        fontSize: 18,
+                        fontSize: isDesktop ? 18 : 16,
                         fontWeight: FontWeight.w700,
                         color: CyberTheme.white,
                       ),
@@ -269,6 +372,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                       child: Text(
                         'No scan logs recorded yet. Enter a URL above to begin your first threat investigation.',
                         style: GoogleFonts.inter(color: CyberTheme.slateLight, fontSize: 13),
+                        textAlign: TextAlign.center,
                       ),
                     ),
                   )
@@ -299,18 +403,60 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
               ),
             ),
         ],
-      ),
+      )),
     );
   }
 
-  Widget _buildUrlScannerTab() {
+  Widget _buildUrlScannerTab(bool isDesktop) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Expanded(
-              child: Container(
+        if (isDesktop)
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: CyberTheme.navyLight.withOpacity(0.4),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: CyberTheme.cardBorder),
+                  ),
+                  child: TextField(
+                    controller: _urlController,
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
+                    decoration: const InputDecoration(
+                      prefixIcon: Padding(
+                        padding: EdgeInsets.all(12),
+                        child: FaIcon(FontAwesomeIcons.link, color: CyberTheme.cyan, size: 16),
+                      ),
+                      hintText: 'Enter complete web URL (e.g. https://login-bank-verification.com)',
+                      hintStyle: TextStyle(color: CyberTheme.slateLight, fontSize: 13),
+                      border: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(vertical: 14),
+                    ),
+                    onSubmitted: (_) => _handleUrlScan(),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              ElevatedButton.icon(
+                onPressed: _handleUrlScan,
+                icon: const FaIcon(FontAwesomeIcons.bolt, size: 14),
+                label: const Text('Analyze URL'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: CyberTheme.cyan,
+                  foregroundColor: CyberTheme.navyDark,
+                  padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 16),
+                ),
+              ),
+            ],
+          )
+        else
+          Column(
+            children: [
+              Container(
                 decoration: BoxDecoration(
                   color: CyberTheme.navyLight.withOpacity(0.4),
                   borderRadius: BorderRadius.circular(8),
@@ -322,9 +468,9 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                   decoration: const InputDecoration(
                     prefixIcon: Padding(
                       padding: EdgeInsets.all(12),
-                      child: FaIcon(FontAwesomeIcons.link, color: CyberTheme.cyan, size: 16),
+                      child: FaIcon(FontAwesomeIcons.link, color: CyberTheme.cyan, size: 15),
                     ),
-                    hintText: 'Enter complete web URL (e.g. https://login-bank-verification.com)',
+                    hintText: 'Enter target web URL...',
                     hintStyle: TextStyle(color: CyberTheme.slateLight, fontSize: 13),
                     border: InputBorder.none,
                     enabledBorder: InputBorder.none,
@@ -334,22 +480,24 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                   onSubmitted: (_) => _handleUrlScan(),
                 ),
               ),
-            ),
-            const SizedBox(width: 12),
-            ElevatedButton.icon(
-              onPressed: _handleUrlScan,
-              icon: const FaIcon(FontAwesomeIcons.bolt, size: 14),
-              label: const Text('Analyze URL'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: CyberTheme.cyan,
-                foregroundColor: CyberTheme.navyDark,
-                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 16),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: _handleUrlScan,
+                  icon: const FaIcon(FontAwesomeIcons.bolt, size: 14),
+                  label: const Text('Analyze Target URL'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: CyberTheme.cyan,
+                    foregroundColor: CyberTheme.navyDark,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                ),
               ),
-            ),
-          ],
-        ),
+            ],
+          ),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 14),
 
         Text(
           'Quick Target Sandbox Scenarios:',
@@ -358,7 +506,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
         const SizedBox(height: 8),
 
         Wrap(
-          spacing: 10,
+          spacing: 8,
           runSpacing: 8,
           children: [
             _buildSampleButton('Phishing Target', 'https://secure-login-verify-account-update.xyz/auth', CyberTheme.danger),
@@ -370,76 +518,108 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
     );
   }
 
-  Widget _buildQrScannerTab() {
-    return Row(
-      children: [
-        // Drop / Pick Zone
-        Expanded(
-          flex: 2,
-          child: InkWell(
-            onTap: _pickQrImage,
-            borderRadius: BorderRadius.circular(8),
-            child: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: CyberTheme.navyLight.withOpacity(0.3),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: _selectedQrBytes != null ? CyberTheme.cyan : CyberTheme.cardBorder,
-                  style: BorderStyle.solid,
-                ),
+  Widget _buildQrScannerTab(bool isDesktop) {
+    if (isDesktop) {
+      return Row(
+        children: [
+          Expanded(
+            flex: 2,
+            child: _buildQrPickZone(),
+          ),
+          if (_selectedQrBytes != null) ...[
+            const SizedBox(width: 16),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.memory(
+                _selectedQrBytes!,
+                width: 90,
+                height: 90,
+                fit: BoxFit.cover,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  FaIcon(
-                    _selectedQrBytes != null ? FontAwesomeIcons.circleCheck : FontAwesomeIcons.cloudArrowUp,
-                    color: _selectedQrBytes != null ? CyberTheme.cyan : CyberTheme.slateLight,
-                    size: 28,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    _selectedQrFileName ?? 'Click or tap to select QR code image (PNG, JPEG, WebP)',
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: _selectedQrBytes != null ? CyberTheme.white : CyberTheme.slateLight,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+            ),
+          ],
+          const SizedBox(width: 16),
+          ElevatedButton.icon(
+            onPressed: _handleQrScan,
+            icon: const FaIcon(FontAwesomeIcons.qrcode, size: 14),
+            label: const Text('Decode & Scan'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: CyberTheme.cyan,
+              foregroundColor: CyberTheme.navyDark,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Column(
+        children: [
+          _buildQrPickZone(),
+          if (_selectedQrBytes != null) ...[
+            const SizedBox(height: 8),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.memory(
+                _selectedQrBytes!,
+                height: 70,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ],
+          const SizedBox(height: 10),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton.icon(
+              onPressed: _handleQrScan,
+              icon: const FaIcon(FontAwesomeIcons.qrcode, size: 14),
+              label: const Text('Decode & Scan QR Matrix'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: CyberTheme.cyan,
+                foregroundColor: CyberTheme.navyDark,
+                padding: const EdgeInsets.symmetric(vertical: 14),
               ),
             ),
           ),
+        ],
+      );
+    }
+  }
+
+  Widget _buildQrPickZone() {
+    return InkWell(
+      onTap: _pickQrImage,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: CyberTheme.navyLight.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: _selectedQrBytes != null ? CyberTheme.cyan : CyberTheme.cardBorder,
+            style: BorderStyle.solid,
+          ),
         ),
-
-        const SizedBox(width: 16),
-
-        // QR Image Preview and Action
-        if (_selectedQrBytes != null)
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.memory(
-              _selectedQrBytes!,
-              width: 90,
-              height: 90,
-              fit: BoxFit.cover,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            FaIcon(
+              _selectedQrBytes != null ? FontAwesomeIcons.circleCheck : FontAwesomeIcons.cloudArrowUp,
+              color: _selectedQrBytes != null ? CyberTheme.cyan : CyberTheme.slateLight,
+              size: 24,
             ),
-          ),
-
-        const SizedBox(width: 16),
-
-        ElevatedButton.icon(
-          onPressed: _handleQrScan,
-          icon: const FaIcon(FontAwesomeIcons.qrcode, size: 14),
-          label: const Text('Decode & Scan'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: CyberTheme.cyan,
-            foregroundColor: CyberTheme.navyDark,
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          ),
+            const SizedBox(height: 6),
+            Text(
+              _selectedQrFileName ?? 'Click or tap to select QR code image (PNG, JPEG, WebP)',
+              style: GoogleFonts.inter(
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+                color: _selectedQrBytes != null ? CyberTheme.white : CyberTheme.slateLight,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 

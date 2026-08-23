@@ -150,50 +150,58 @@ class _MainShellState extends State<MainShell> {
     // Mobile / Tablet shell with BottomNavigationBar
     return Scaffold(
       backgroundColor: CyberTheme.navyDark,
-      body: body,
-      bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: CyberTheme.navy,
-          border: Border(
-            top: BorderSide(color: Color(0x1A00C8FF)),
+      body: SafeArea(
+        top: true,
+        bottom: false,
+        child: body,
+      ),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        bottom: true,
+        child: Container(
+          decoration: const BoxDecoration(
+            color: CyberTheme.navy,
+            border: Border(
+              top: BorderSide(color: Color(0x1A00C8FF)),
+            ),
           ),
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedResult = null;
-              _currentIndex = index;
-            });
-          },
-          backgroundColor: Colors.transparent,
-          selectedItemColor: CyberTheme.cyan,
-          unselectedItemColor: CyberTheme.slateLight,
-          type: BottomNavigationBarType.fixed,
-          selectedLabelStyle: GoogleFonts.spaceGrotesk(fontSize: 11, fontWeight: FontWeight.w700),
-          unselectedLabelStyle: GoogleFonts.inter(fontSize: 11),
-          items: const [
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.house, size: 16),
-              label: 'Overview',
-            ),
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.magnifyingGlassChart, size: 16),
-              label: 'Scanner',
-            ),
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.clockRotateLeft, size: 16),
-              label: 'History',
-            ),
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.fileShield, size: 16),
-              label: 'Reports',
-            ),
-            BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.gears, size: 16),
-              label: 'Settings',
-            ),
-          ],
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            onTap: (index) {
+              setState(() {
+                _selectedResult = null;
+                _currentIndex = index;
+              });
+            },
+            backgroundColor: Colors.transparent,
+            selectedItemColor: CyberTheme.cyan,
+            unselectedItemColor: CyberTheme.slateLight,
+            type: BottomNavigationBarType.fixed,
+            selectedLabelStyle: GoogleFonts.spaceGrotesk(fontSize: 11, fontWeight: FontWeight.w700),
+            unselectedLabelStyle: GoogleFonts.inter(fontSize: 11),
+            items: const [
+              BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.house, size: 16),
+                label: 'Overview',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.magnifyingGlassChart, size: 16),
+                label: 'Scanner',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.clockRotateLeft, size: 16),
+                label: 'History',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.fileShield, size: 16),
+                label: 'Reports',
+              ),
+              BottomNavigationBarItem(
+                icon: FaIcon(FontAwesomeIcons.gears, size: 16),
+                label: 'Settings',
+              ),
+            ],
+          ),
         ),
       ),
     );

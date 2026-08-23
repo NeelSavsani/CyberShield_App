@@ -167,12 +167,13 @@ class _AuthScreenState extends State<AuthScreen> {
 
     return Scaffold(
       backgroundColor: CyberTheme.navyDark,
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 460),
-            child: Column(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 460),
+              child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Cyber Logo & Shield
@@ -528,7 +529,7 @@ class _AuthScreenState extends State<AuthScreen> {
             ),
           ),
         ),
-      ),
+      )),
     );
   }
 }

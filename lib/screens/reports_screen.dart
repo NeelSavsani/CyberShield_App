@@ -22,12 +22,13 @@ class ReportsScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: CyberTheme.navyDark,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: isDesktop ? 32 : 16,
-          vertical: 24,
-        ),
-        child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: isDesktop ? 32 : 16,
+            vertical: isDesktop ? 24 : 16,
+          ),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Title Header
@@ -174,7 +175,7 @@ class ReportsScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildReportStatCard(String title, String val, Color color, String sub) {

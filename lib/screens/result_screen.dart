@@ -112,12 +112,13 @@ Global Threat Consensus:
           const SizedBox(width: 8),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: isDesktop ? 32 : 16,
-          vertical: 24,
-        ),
-        child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: EdgeInsets.symmetric(
+            horizontal: isDesktop ? 32 : 16,
+            vertical: isDesktop ? 24 : 16,
+          ),
+          child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Top Verdict Banner
@@ -291,7 +292,7 @@ Global Threat Consensus:
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildQuickStatsMatrix(ScanResult r, bool isDesktop) {
