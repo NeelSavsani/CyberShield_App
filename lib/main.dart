@@ -19,7 +19,11 @@ import 'services/firebase_auth_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await FirebaseAuthService.initialize();
+  try {
+    await FirebaseAuthService.initialize();
+  } catch (e) {
+    debugPrint('Firebase initialization notice: $e');
+  }
   runApp(const CyberShieldApp());
 }
 
